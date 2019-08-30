@@ -11,12 +11,27 @@ Version 0.1.0
 
 ### How do I get set up? ###
 
-To use *SALT*, just place the project directory where python can find it,
-or adapt PYTHONPATH to let python find it where it is.
+To use *SALT*, just clone or download a copy of the repository and run
+
+pip install .
+
+If you intend to alter some code, then just install it as a link:
+
+pip install -e .
+
+To uninstall (really not necessary, is it?), run
+
+pip uninstall salt
 
 There are no dependencies outside the standard python library to use *SALT*.
 SPHINX is required to build the documentation. You can download the documentation
 from this page (currently as pdf). Please read in it for further information.
+To build the documentation, enter the gendoc directory and run
+
+make html
+
+This will do the trick both in Linux and Windows, either by using GNU make on the
+existing Makefile, or by running the bat-script Make.bat.
 
 There are a number of unit tests in the _unittest_ directory. Just run the scripts
 to check that all is fine.
