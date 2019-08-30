@@ -7,7 +7,7 @@ found in high quantities in nature. This can be seen in parallel to *SALT*
 being developed to obtain derivatives of large scale systems, well at least a
 couple of thousand variables.
 
-Version 0.1.0
+Version 1.1.0
 
 ### How do I get set up? ###
 
