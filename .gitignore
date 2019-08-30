@@ -1,0 +1,4 @@
+*.pyc
+.spyproject
+gendoc/build/
+*.egg-info/
