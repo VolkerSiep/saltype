@@ -289,34 +289,45 @@ def sparse_derivative(dependent, independent):
                  ID_COSH: _cosh, ID_TANH: _tanh, ID_SQRT: _sqrt, ID_LOG: _log,
                  ID_EXP: _exp, ID_INV: _inv}
 
+        def get_from_child(child, key):
+            condition = child and key in child
+            return SYM_ZERO.dup() if not condition else child[key]
+
+        def get_child_keys(child):
+            return set() if not child else child.keys()
+
         #  make {indep_i: [dc_j_dx_i]}
         #  insert zeros where necessary
         if len(childs) == 1:  # frequent case, much easier
             childs2 = {i_id: [deri] for i_id, deri in childs[0].items()}
         else:
             childs2 = {}
-            for key in set().union(*[dcdx_i.keys() for dcdx_i in childs]):
-                entry = [dcdx_i.get(key, None) for dcdx_i in childs]
-                for k, e_i in enumerate(entry):
-                    if e_i is None:
-                        entry[k] = SYM_ZERO.dup()
-                childs2[key] = entry
+            keys = [get_child_keys(dcdx_i) for dcdx_i in childs]
+            for key in set().union(*keys):
+                childs2[key] = [get_from_child(dcdx_i, key)
+                                for dcdx_i in childs]
         return rules[node.tid](node, childs2)
 
     def derive(node):
         node_id = id(node)
         if node_id not in deris:
             if node.tid in (ID_ZERO, ID_ONE, ID_SRC):
-                deris[node_id] = {}
+                deris[node_id] = None
             else:
                 dcdx = [derive(child) for child in node.childs]
                 if True in [bool(cx_i) for cx_i in dcdx]:
-                    deris[node_id] = chain_rule(node, dcdx)
+                    entry = chain_rule(node, dcdx)
+                    entry = {i_id: node for i_id, node in entry.items()
+                             if node.tid != ID_ZERO}
+                    if not entry:
+                        entry = None
+                    deris[node_id] = entry
                 else:
                     for cx_i in dcdx:
-                        for cx_ij in cx_i.values():
-                            cx_ij.release()
-                    deris[node_id] = {}
+                        if cx_i:
+                            for cx_ij in cx_i.values():
+                                cx_ij.release()
+                    deris[node_id] = None
         return deris[node_id]
 
     # index in independent vector as function of id
@@ -325,10 +336,11 @@ def sparse_derivative(dependent, independent):
     result = {}
     for k, dep in enumerate(dependent):
         entry = derive(dep)
-        if entry:  # node dependent on independent variables
-            entry = {indep_idx[i_id]: Salt(d_node)
-                     for i_id, d_node in entry.items()}
-            result[k] = entry
+        if entry:
+            result[k] = {indep_idx[i_id]: Salt(d_node)
+                         for i_id, d_node in entry.items()}
+            for node in entry.values():
+                node.release()
     return result
 
 
