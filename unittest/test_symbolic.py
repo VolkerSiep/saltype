@@ -9,9 +9,9 @@ import math
 path.append(join(dirname(argv[0]), pardir))
 
 # internal modules
-from salt import (Leaf, sin, cos, tan, asin, acos, atan, Salt,
-                  sinh, cosh, tanh, sqrt, log, exp, squ, inv)
-from salt.datatype import ID_INV, SYM_ZERO, SYM_ONE
+from salty import (Leaf, sin, cos, tan, asin, acos, atan, Salt,
+                   sinh, cosh, tanh, sqrt, log, exp, squ, inv)
+from salty.datatype import ID_INV, SYM_ZERO, SYM_ONE
 
 UNARIES = ["sqrt(%s)", "exp(%s)", "log(%s)", "sin(%s)", "cos(%s)", "tan(%s)",
            "sinh(%s)", "cosh(%s)", "tanh(%s)", "asin(%s)", "acos(%s)",
@@ -54,7 +54,7 @@ class SymbolicTest(TestCase):
         from timeit import repeat
         msg = "This test can fail on a slow PC, no consequences.\n" + \
               "Don't feel offended! Runtime over expectation: %.1f%%"
-        pre = "from salt import Leaf, sin"
+        pre = "from salty import Leaf, sin"
         statement = ["y = x = Leaf(3.14159)",
                      "for _ in range(100):",
                      "    y = sin(y) * y"]
@@ -64,7 +64,7 @@ class SymbolicTest(TestCase):
         self.assertLess(res, 0.003, msg % (100000 * res-100))
 
         # now derive on top ;-)
-        pre = [pre, "from salt import Derivative"] + statement
+        pre = [pre, "from salty import Derivative"] + statement
         statement = "z = Derivative([y], [x])"
         res = repeat(statement, "\n".join(pre), repeat=100, number=1)
         res = sum(res) / 100.0
@@ -114,7 +114,7 @@ class SymbolicTest(TestCase):
         scopeFloat.update(m)
 
         scopeSalt = {"z": z, "o": o, "x": x, "y": y}
-        salt = __import__('salt')
+        salt = __import__('salty')
         m = dict((n, getattr(salt, n)) for n in dir(salt) if not n.startswith("_"))
         scopeSalt.update(m)
         for ex in allExpressions:

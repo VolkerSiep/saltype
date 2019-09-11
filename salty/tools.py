@@ -14,7 +14,7 @@ from .datatype import (SYM_ONE, SYM_ZERO, SYM_TWO, Salt, Leaf, s_add,
 class SaltDict(dict):
     def __init__(self, source=None):
         if source:
-            self.update(**source)
+            self.update(source)
 
     def __add__(self, other):
         return self.__binary_op(other, lambda a, b: a + b, "addition")
@@ -424,7 +424,7 @@ def sparse_derivative(dependent, independent):
     for k, dep in enumerate(dependent):
         entry = derive(dep)
         if entry:
-            result[k] = SaltDict({indep_idx[i_id]: Salt(d_node)
+            result[k] = SaltDict({indep_idx[i_id]: Salt(d_node.dup())
                                   for i_id, d_node in entry.items()})
             for node in entry.values():
                 node.release()
