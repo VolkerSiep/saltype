@@ -32,6 +32,10 @@ Derivative
     :show-inheritance:
     :members: __init__
 
+sparse_derivative
+^^^^^^^^^^^^^^^^^
+.. autofunction:: salt.tools.sparse_derivative
+
 dump
 ^^^^
 .. autofunction:: salt.tools.dump

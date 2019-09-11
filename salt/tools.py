@@ -11,7 +11,81 @@ from .datatype import (SYM_ONE, SYM_ZERO, SYM_TWO, Salt, Leaf, s_add,
                        ID_EXP, ID_LOG, ID_INV, ID_SQU, ID_PLAIN, NUM_IDS)
 
 
-class SaltArray(object):
+class SaltDict(dict):
+    def __init__(self, source=None):
+        if source:
+            self.update(**source)
+
+    def __add__(self, other):
+        return self.__binary_op(other, lambda a, b: a + b, "addition")
+
+    def __sub__(self, other):
+        return self.__binary_op(other, lambda a, b: a - b, "subtraction")
+
+    def __mul__(self, other):
+        return self.__binary_op(other, lambda a, b: a * b, "multiplication")
+
+    def __div__(self, other):
+        return self.__binary_op(other, lambda a, b: a / b, "division")
+
+    def __truediv__(self, other):
+        return self.__binary_op(other, lambda a, b: a / b, "division")
+
+    def __pow__(self, other):
+        return self.__binary_op(other, lambda a, b: a ** b, "power operation")
+
+    def __radd__(self, other):
+        return self.__binary_op(other, lambda a, b: a + b, "addition")
+
+    def __rsub__(self, other):
+        return self.__binary_op(other, lambda a, b: b - a, "subtraction")
+
+    def __rmul__(self, other):
+        return self.__binary_op(other, lambda a, b: a * b, "multiplication")
+
+    def __rdiv__(self, other):
+        return self.__binary_op(other, lambda a, b: b / a, "division")
+
+    def __rtruediv__(self, other):
+        return self.__binary_op(other, lambda a, b: b / a, "division")
+
+    def __rpow__(self, other):
+        return self.__binary_op(other, lambda a, b: a ** b, "power operation")
+
+    def __binary_op(self, other, operator, operation):
+        result = SaltDict(self)
+        try:
+            if (self.keys() - other.keys()) or (other.keys() - self.keys()):
+                msg = "Unequal sets of keys during {}".format(operation)
+                raise KeyError(msg)
+        except AttributeError:  # no, it might just be a scalar
+            try:
+                for key in result:
+                    result[key] = operator(result[key], other)
+            except Exception:  # no, must be something else
+                return NotImplemented
+        else:
+            try:
+                for key, symbol in other.items():
+                    result[key] = operator(result[key], symbol)
+            except Exception:  # no, must be something else
+                return NotImplemented
+        return result
+
+    def __abs__(self):
+        result = {key: -value for key, value in self.items()}
+        return SaltDict(result)
+
+    @property
+    def float_dict(self):
+        return {key: value.value for key, value in self.items()}
+
+    def invalidate(self):
+        for value in self.values():
+            value.invalidate()
+       
+
+class SaltArray:
     """This class represents an array specialised for symbols in it.
 
     You may instantiate this list with anything in it, but for the
@@ -139,6 +213,19 @@ class SaltArray(object):
 
 
 def sparse_derivative(dependent, independent):
+    """Derive the symbols in the ordered container ``dependent`` with respect
+    to the ordered container of symbols ``independent``. The result is a
+    nested dictionary, of which the main key is the index of the dependent
+    variable in ``dependent``, the secondary key the index of the independent
+    variable in ``independent``, and its value the
+    :py:obj:`Salt <salt.datatype.Salt>` object.
+
+    :param list<Salt> dependent: The container holding the dependent variables
+    :param list<Salt> independent: The container holding the independent variables
+ 
+    :result: The nested dictionary, mapping indices to the derived symbols.
+    :rtype: dict<int, dict<int, Salt>>
+    """
     deris = {id(x.node): {id(x.node): SYM_ONE.dup()} for x in independent}
     dependent = [y.node for y in dependent]
 
@@ -337,8 +424,8 @@ def sparse_derivative(dependent, independent):
     for k, dep in enumerate(dependent):
         entry = derive(dep)
         if entry:
-            result[k] = {indep_idx[i_id]: Salt(d_node)
-                         for i_id, d_node in entry.items()}
+            result[k] = SaltDict({indep_idx[i_id]: Salt(d_node)
+                                  for i_id, d_node in entry.items()})
             for node in entry.values():
                 node.release()
     return result

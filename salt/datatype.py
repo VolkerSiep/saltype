@@ -297,6 +297,9 @@ def s_pow(first, second):
         res = first
     elif first.tid == ID_EXP:  # exp(x)**y = exp(x*y)
         res = s_unary(ID_EXP, s_mul(_fc(first), second))
+    elif second is SYM_TWO:
+        res = s_unary(ID_SQU, first)
+        second.release()
     else:
         res = SymDep(ID_POW, first, second)
     return res

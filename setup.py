@@ -2,7 +2,7 @@ from setuptools import setup
 
 setup(name='SALT',
       version='1.1',
-      description='The funniest joke in the world',
+      description='Symbolic algebra light',
       # url='http://github.com/siepmann/salt',
       author='Volker Siepmann',
       author_email='volker.siepmann@gmail.com',
