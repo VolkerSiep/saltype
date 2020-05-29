@@ -8,4 +8,10 @@ setup(name='SALTY',
       author_email='volker.siepmann@gmail.com',
       license='GNU General Public License',
       packages=['salty'],
+      install_requires=[
+          "pytest>=5.3",  # to run unit tests properly
+          "Sphinx>=2.2",  # to generate documentation
+          "numpy>=1.17",  # for numerical manipulations
+          "scipy>=1.3",  # for advanced numerics (e.g. sparse matrices)
+        ],
       zip_safe=False)
