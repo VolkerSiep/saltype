@@ -3,7 +3,9 @@
 For a detailed documentation, see the html project documentation
 """
 import math
-from numpy import float64
+from numpy import float64, seterr
+
+seterr(all="ignore")
 
 (ID_SRC, ID_ZERO, ID_ONE, ID_ADD, ID_SUB, ID_MUL, ID_DIV, ID_NEG,
  ID_SEL, ID_POW, ID_SIN, ID_COS, ID_TAN, ID_ASIN, ID_ACOS, ID_ATAN,
