@@ -14,4 +14,6 @@ setup(name='SALTY',
           "numpy>=1.17",  # for numerical manipulations
           "scipy>=1.3",  # for advanced numerics (e.g. sparse matrices)
         ],
+      extras_require={"doc": ["Sphinx>=2.2"],
+                      "test": ["pytest>=5.3"]},
       zip_safe=False)
