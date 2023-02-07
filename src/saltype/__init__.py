@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 """
-Main package file of the SALT project. Please refer to documentation written
+Main package file of the saltype project. Please refer to documentation written
 in the particular modules.
 """
 from .datatype import (Leaf, Salt, sin, cos, tan, asin, acos, log10,

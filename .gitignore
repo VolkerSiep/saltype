@@ -3,3 +3,4 @@
 gendoc/build/
 doc/
 *.egg-info/
+.idea/

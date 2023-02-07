@@ -2,21 +2,19 @@
 
 # external modules
 from unittest import main, TestCase
-from sys import argv, path
-from os.path import dirname, join, pardir
+from sys import argv
 import math
 
-path.append(join(dirname(argv[0]), pardir))
 
 # internal modules
-from salty import (Leaf, squ, sin, cos, tan, asin, acos, atan, sinh, cosh,
-                   tanh, log, sqrt, inv, exp, Derivative, simplify, dump,
-                   SaltArray, empanada, empanadina)
-from salty.tools import sparse_derivative
+from saltype import (Leaf, squ, sin, cos, tan, asin, acos, atan, sinh, cosh,
+                     tanh, log, sqrt, inv, exp, Derivative, simplify, dump,
+                     SaltArray, empanada, empanadina)
+from saltype import sparse_derivative
 
 class SimplifyTest(TestCase):
     def test_simple(self):
-        a, b  = map(Leaf, (2.0, 3.0))
+        a, b = map(Leaf, (2.0, 3.0))
         c = (a + b) * (b + a)
         dups = simplify(c)
         self.assertEqual(dups, 1)
@@ -150,7 +148,7 @@ class DeriveTest(TestCase):
             self.assertAlmostEqual(r1, r2)
 
     def test_compare(self):
-        pre = ["from salty import Leaf, Derivative, cos",
+        pre = ["from saltype import Leaf, Derivative, cos",
                "x0, dt, a = map(Leaf, [1.0, 1.0, 1.0])",
                "x = x0",
                "for _ in range(100):",
@@ -396,16 +394,16 @@ class SparseDerivativeTest(TestCase):
 
     def test_mul(self):
         a, b = Leaf(11.0), Leaf(7.0)
-        print("Def a:", a.node.ref_count) 
+        print("Def a:", a.node.ref_count)
         c = a * b
-        print("Def c:", a.node.ref_count) 
+        print("Def c:", a.node.ref_count)
         res = sparse_derivative([c], [a, b])
-        print("Der c:", a.node.ref_count) 
+        print("Der c:", a.node.ref_count)
         res = [res[0][0].value, res[0][1].value]
         self.assertListEqual(res, [7.0, 11.0])
-        print("Del res:", a.node.ref_count) 
+        print("Del res:", a.node.ref_count)
         del c
-        print("Del c:", a.node.ref_count) 
+        print("Del c:", a.node.ref_count)
         self.assertEqual(a.node.ref_count, 1)
         self.assertEqual(b.node.ref_count, 1)
 

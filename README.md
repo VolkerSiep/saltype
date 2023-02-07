@@ -1,45 +1,44 @@
 # README #
 
-**SALT** stands for **S**ymbolic **A**lgebra **L**igh**T**, and is also
+**Saltype** stands for **S**ymbolic **A**lgebra **L**ight **Type**, and is also
 a common additive in food preparation, which makes the name fit in the palette
 of software developed by me. Salt (as NaCl) is also a substance that can be
-found in high quantities in nature. This can be seen in parallel to *SALT*
+found in high quantities in nature. This can be seen in parallel to *saltype*
 being developed to obtain derivatives of large scale systems, well at least a
 couple of thousand variables.
 
-Version 1.1.0
-
 ### How do I get set up? ###
 
-To use *SALT*, just clone or download a copy of the repository and run
+``pip install saltype``
 
-pip install .
 
-If you intend to alter some code, then just install it as a link:
+There are no dependencies outside the standard python library to use *saltype*.
 
-pip install -e .
+BTW: I first called this `salt`, then `salty`, and each time somebody else created another package on
+pypi with the same name. Now I'll try to upload this before it happens again.
 
-To uninstall (really not necessary, is it?), run
+### For developing ...
 
-pip uninstall salt
+`sphinx` is required to build the documentation, and `pytest` is handy to run the tests, though
+they also run on the stdlib `unittest` module.
 
-There are no dependencies outside the standard python library to use *SALT*.
-SPHINX is required to build the documentation. You can download the documentation
-from this page (currently as pdf). Please read in it for further information.
-To build the documentation, enter the gendoc directory and run
+To build the documentation from the repo, enter the gendoc directory and run
 
-make html
+`make html`
 
-This will do the trick both in Linux and Windows, either by using GNU make on the
-existing Makefile, or by running the bat-script Make.bat.
+As being generic functionality of `sphinx`, this should work on Linux, Wintendo and Mac.
 
-There are a number of unit tests in the _unittest_ directory. Just run the scripts
-to check that all is fine.
+There are a number of unit tests in the `unittest` directory. Run 
 
 ### Contribution guidelines ###
 
+Well, let's first get a star on github, before we talk about somebody else being
+interested in taking this further. Honestly, for many purposes, `casadi` is a better
+choice here, but if you just need something lightweight, maybe on embedded systems,
+then this might actually be the niece for `salttype`.
+
 Contributions in the shape of coding and suggestions are welcome, but so long
-handled via personal communication - if somebody should actually be interested.
+handled via personal communication.
 
 ### Who do I talk to? ###
 

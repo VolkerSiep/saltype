@@ -83,14 +83,14 @@ class SaltDict(dict):
     def invalidate(self):
         for value in self.values():
             value.invalidate()
-       
+
 
 class SaltArray:
     """This class represents an array specialised for symbols in it.
 
     You may instantiate this list with anything in it, but for the
     specific methods to work, the containing datatypes better are other
-    containers or objects of type :py:obj:`Salt <salt.datatype.Salt>`.
+    containers or objects of type :py:obj:`Salt <saltype.datatype.Salt>`.
     Derivatives are represented as ``SaltArray`` objects.
     Some slicing functionality is included, and indexing supports
     multi-dimensional lists. Furthermore the objects are iteratable.
@@ -99,12 +99,12 @@ class SaltArray:
         """Constructor of an empty object or one based on the given source.
 
         :param source: The symbols to be treated as a collection. Containers
-            can be nested and inhomogenious, as long as they are either
-            iterable or of type :py:obj:`Salt <salt.datatype.Salt>`.
+            can be nested and inhomogeneous, as long as they are either
+            iterable or of type :py:obj:`Salt <saltype.datatype.Salt>`.
             If ``source`` is not provided (or ``None``), the object is
             initialised as an empty container.
         :type source: Iterable (nested) container of
-            :py:obj:`Salt <salt.datatype.Salt>`
+            :py:obj:`Salt <saltype.datatype.Salt>`
         """
         self.__source = [] if source is None else source
 
@@ -150,7 +150,7 @@ class SaltArray:
             return SaltArray(res)
 
     def invalidate(self):
-        """Same as :py:obj:`Salt.invalidate <salt.datatype.Salt.invalidate>`,
+        """Same as :py:obj:`Salt.invalidate <saltype.datatype.Salt.invalidate>`,
         just applied to the entire container, therefore slightly more
         efficient
         :return: None
@@ -160,8 +160,8 @@ class SaltArray:
     @staticmethod
     def invalidate_container(container):
         """The static version of
-        :py:obj:`invalidate <salt.tools.SaltArray.invalidate>`, can be applied
-        to any (nested) container"""
+        :py:obj:`invalidate <saltype.tools.SaltArray.invalidate>`, can be
+        applied to any (nested) container"""
         for elem in container:
             try:
                 elem.invalidate()
@@ -171,7 +171,7 @@ class SaltArray:
     def _get_value(self):
         return SaltArray.value_container(self.__source)
     value = property(_get_value)
-    """Same as :py:obj:`Salt.value <salt.datatype.Salt.value>`,
+    """Same as :py:obj:`Salt.value <saltype.datatype.Salt.value>`,
     just applied to the entire container and returning a nested
     container of same shape as original, containing the float values
 
@@ -182,7 +182,7 @@ class SaltArray:
     @staticmethod
     def value_container(container):
         """The static version of
-        :py:obj:`value <salt.tools.SaltArray.value>`, can be applied
+        :py:obj:`value <saltype.tools.SaltArray.value>`, can be applied
         to any (nested) container"""
         def _val(obj):
             try:
@@ -193,7 +193,7 @@ class SaltArray:
         return [_val(elem) for elem in container]
 
     def recalc(self):
-        """Same as :py:obj:`Salt.recalc <salt.datatype.Salt.recalc>`,
+        """Same as :py:obj:`Salt.recalc <saltype.datatype.Salt.recalc>`,
         just applied to the entire container, therefore slightly more
         efficient
 
@@ -205,7 +205,7 @@ class SaltArray:
     @staticmethod
     def recalc_container(container):
         """The static version of
-        :py:obj:`recalc <salt.tools.SaltArray.recalc>`, can be applied
+        :py:obj:`recalc <saltype.tools.SaltArray.recalc>`, can be applied
         to any (nested) container"""
         SaltArray.value_container(container)
         SaltArray.invalidate_container(container)
@@ -218,11 +218,11 @@ def sparse_derivative(dependent, independent):
     nested dictionary, of which the main key is the index of the dependent
     variable in ``dependent``, the secondary key the index of the independent
     variable in ``independent``, and its value the
-    :py:obj:`Salt <salt.datatype.Salt>` object.
+    :py:obj:`Salt <saltype.datatype.Salt>` object.
 
     :param list<Salt> dependent: The container holding the dependent variables
     :param list<Salt> independent: The container holding the independent variables
- 
+
     :result: The nested dictionary, mapping indices to the derived symbols.
     :rtype: dict<int, dict<int, Salt>>
     """
@@ -435,7 +435,7 @@ class Derivative(SaltArray):
     """
     This class could have been implemented as a function, as it consciously
     behaves like one. However, the cleanest way to encapsulate it's (private)
-    content is probably to define it as a class, prepresenting its own result.
+    content is probably to define it as a class, representing its own result.
 
     When deriving (right under construction), the dependent variables and their
     underlying graph are first analysed in order to avoid chewing on derivatives
@@ -863,7 +863,7 @@ def empanada(func, inp, dim_out=1):
     :type inp: list<:py:obj:`Salt <salt.datatype.Salt>`>
     :return: A list of symbols linked to the return values of
         :code:`func`, with the first derivative being represented by :math:`J`
-    :rtype: list<:py:obj:`Salt <salt.datatype.Salt>`>
+    :rtype: list<:py:obj:`Salt <saltype.datatype.Salt>`>
     """
     output = [Leaf() for _ in range(dim_out)]
     jacobian = [[Leaf() for _ in inp] for _ in range(dim_out)]
@@ -913,7 +913,7 @@ def empanadina(func, inp):
     :type inp: :py:obj:`Salt <salt.datatype.Salt>`
     :return: The symbol linked to the return value of
         :code:`func`, with the first derivative being represented by :math:`J`
-    :rtype: :py:obj:`Salt <salt.datatype.Salt>`
+    :rtype: :py:obj:`Salt <saltype.datatype.Salt>`
     """
     def _func(inp):
         out, jac = func(inp[0])

@@ -666,8 +666,8 @@ class Salt(object):
     def recalc(self):
         """Force the evaluation of this symbol.
 
-        The normal purpose of *SALT* is to treat large quantities of
-        dependent and independent symbols by following the cyclus of
+        The normal purpose of *saltype* is to treat large quantities of
+        dependent and independent symbols by following the cycle of
         invalidating, setting values, and getting values. However, if you
         suddenly really need to know the value of a variable out of this
         scheme, use recalc.
@@ -713,8 +713,8 @@ class Leaf(Salt):
     """
     def __init__(self, value=0.0):
         """
-        Constructor to instantiate a :py:obj:`Leaf <salt.datatype.Leaf>` object
-        from a *float* value.
+        Constructor to instantiate a :py:obj:`Leaf <saltype.datatype.Leaf>`
+        object from a *float* value.
 
         :param value: The initial numerical value of the node
         :type value: float
@@ -732,7 +732,7 @@ class Leaf(Salt):
         self.node.value = float64(value)
     value = property(Salt._get_value, _set_value)
     """Same property as defined in base class
-    :py:obj:`Salt <salt.datatype.Salt>`, but writable.
+    :py:obj:`Salt <saltype.datatype.Salt>`, but writable.
     Setting this property has no immediate side effects. In particular,
     dependent nodes do **not** get notified to re-evaluate automatically.
     For performance reasons,

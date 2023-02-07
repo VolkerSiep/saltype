@@ -2,16 +2,14 @@
 
 # external modules
 from unittest import main, TestCase
-from sys import argv, path
-from os.path import dirname, join, pardir
+from sys import argv
 import math
 
-path.append(join(dirname(argv[0]), pardir))
 
 # internal modules
-from salty import (Leaf, sin, cos, tan, asin, acos, atan, Salt,
-                   sinh, cosh, tanh, sqrt, log, exp, squ, inv)
-from salty.datatype import ID_INV, SYM_ZERO, SYM_ONE
+from saltype import (Leaf, sin, cos, tan, asin, acos, atan, Salt,
+                     sinh, cosh, tanh, sqrt, log, exp, squ, inv)
+from saltype.datatype import ID_INV, SYM_ZERO, SYM_ONE
 
 UNARIES = ["sqrt(%s)", "exp(%s)", "log(%s)", "sin(%s)", "cos(%s)", "tan(%s)",
            "sinh(%s)", "cosh(%s)", "tanh(%s)", "asin(%s)", "acos(%s)",
@@ -54,7 +52,7 @@ class SymbolicTest(TestCase):
         from timeit import repeat
         msg = "This test can fail on a slow PC, no consequences.\n" + \
               "Don't feel offended! Runtime over expectation: %.1f%%"
-        pre = "from salty import Leaf, sin"
+        pre = "from saltype import Leaf, sin"
         statement = ["y = x = Leaf(3.14159)",
                      "for _ in range(100):",
                      "    y = sin(y) * y"]
@@ -64,7 +62,7 @@ class SymbolicTest(TestCase):
         self.assertLess(res, 0.003, msg % (100000 * res-100))
 
         # now derive on top ;-)
-        pre = [pre, "from salty import Derivative"] + statement
+        pre = [pre, "from saltype import Derivative"] + statement
         statement = "z = Derivative([y], [x])"
         res = repeat(statement, "\n".join(pre), repeat=100, number=1)
         res = sum(res) / 100.0
@@ -114,13 +112,13 @@ class SymbolicTest(TestCase):
         scopeFloat.update(m)
 
         scopeSalt = {"z": z, "o": o, "x": x, "y": y}
-        salt = __import__('salty')
+        salt = __import__('saltype')
         m = dict((n, getattr(salt, n)) for n in dir(salt) if not n.startswith("_"))
         scopeSalt.update(m)
         for ex in allExpressions:
             try:
                 ref = eval(ex, scopeFloat)
-                print(ref, ex, scopeFloat["x"])
+                if ref != ref: raise ValueError()  # nan, inf
                 if not isinstance(ref, float): raise ValueError()
                 if abs(ref) > 1e10: raise ValueError()
             except ValueError: pass
@@ -130,15 +128,15 @@ class SymbolicTest(TestCase):
                 try:
                     err = "Expression '%s' went south: %e != %e" % (ex, ref, res)
                     self.assertAlmostEqual(ref, res, 5, err)
-                except Exception:
+                except Exception as err:
                     err = "Expression '%s' went south: %s != %s" % \
                         (ex, repr(ref), repr(res))
                     self.assertTrue(False, err)
         # and now, reference count check on independent nodes
         zn, on, xn = z.node, o.node, x.node
         del scopeSalt, z, o, x
-        self.assertEqual(zn.ref_count, 1) # global object SYM_ZERO remaining
-        self.assertEqual(on.ref_count, 1) # global object SYM_ONE remaining
+        self.assertEqual(zn.ref_count, 1)  # global object SYM_ZERO remaining
+        self.assertEqual(on.ref_count, 1)  # global object SYM_ONE remaining
         self.assertEqual(xn.ref_count, 0)
 
     def setUp(self):
