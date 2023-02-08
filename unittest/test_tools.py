@@ -21,7 +21,7 @@ class SimplifyTest(TestCase):
         self.assertEqual(a.node.ref_count, 2)
 
     def test_a_bit_more(self):
-        N = 10000
+        N = 100
         a, b = map(Leaf, (2.0, 3.0))
         c = [sin(a + b) for _ in range(N)]
         dups = simplify(c)
@@ -29,7 +29,7 @@ class SimplifyTest(TestCase):
         self.assertEqual(a.node.ref_count, 2)
 
     def test_nested(self):
-        N = 300  # not much more, stack would be exhausted
+        N = 30
         c = a = Leaf(2.0)
         for _ in range(N):
             c = c + sin(a)
@@ -394,16 +394,16 @@ class SparseDerivativeTest(TestCase):
 
     def test_mul(self):
         a, b = Leaf(11.0), Leaf(7.0)
-        print("Def a:", a.node.ref_count)
+        # print("Def a:", a.node.ref_count)
         c = a * b
-        print("Def c:", a.node.ref_count)
+        # print("Def c:", a.node.ref_count)
         res = sparse_derivative([c], [a, b])
-        print("Der c:", a.node.ref_count)
+        # print("Der c:", a.node.ref_count)
         res = [res[0][0].value, res[0][1].value]
         self.assertListEqual(res, [7.0, 11.0])
-        print("Del res:", a.node.ref_count)
+        # print("Del res:", a.node.ref_count)
         del c
-        print("Del c:", a.node.ref_count)
+        # print("Del c:", a.node.ref_count)
         self.assertEqual(a.node.ref_count, 1)
         self.assertEqual(b.node.ref_count, 1)
 

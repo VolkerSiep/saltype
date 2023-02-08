@@ -69,13 +69,15 @@ the derivative algorithm is symbolic and with that rather primitive compared
 to the advanced application of forward and reverse algorithmic differentiation
 as implemented in CasADi_.
 
-**The main reason to maintain *saltype* aside is to hold a lightweight package
-(currently 50 kB source files, of which most of it is inline documentation)
-that is almost not dependent on anything but python itself (I need the ``numpy``
-float datatype in order not to throw exceptions for evaluations yielding ``nan``
-or ``inf``. I developed *saltype* to create and evaluate Jacobian matrices of
-systems with up to several thousand variables - as efficient and pythonic
-as possible**.
+.. note::
+
+    The main reason to maintain *saltype* aside is to hold a lightweight package
+    (currently 50 kB source files, of which most of it is inline documentation)
+    that is almost not dependent on anything but python itself (I need the ``numpy``
+    float datatype in order not to throw exceptions for evaluations yielding ``nan``
+    or ``inf``). I developed *saltype* to create and evaluate Jacobian matrices of
+    systems with up to several thousand variables - as efficient and pythonic
+    as possible.
 
 Key concept
 -----------

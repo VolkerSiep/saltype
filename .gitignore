@@ -3,3 +3,6 @@
 doc/build
 *.egg-info/
 .idea/
+build/
+dist/
+sandbox/

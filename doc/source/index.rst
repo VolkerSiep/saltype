@@ -1,8 +1,8 @@
-SALT Documentation
-==================
+Saltype Documentation
+=====================
 Brief description
 -----------------
-**SALT** stands for **S**\ ymbolic **A**\ lgebra **L**\ igh\ **T**. It's
+**Saltype** stands for **S**\ ymbolic **A**\ lgebra **L**\ ight **Type**. It's
 main purpose is to provide symbolic derivatives for systems of several
 thousand variables efficiently in terms of performance and memory. With that,
 the objective is not to be fit to hold a candle to established packages like
@@ -35,3 +35,6 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
+
+.. _CasADi: https://github.com/casadi
+.. _Sympy: http://www.sympy.org
