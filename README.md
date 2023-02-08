@@ -37,9 +37,5 @@ interested in taking this further. Honestly, for many purposes, `casadi` is a be
 choice here, but if you just need something lightweight, maybe on embedded systems,
 then this might actually be the niece for `salttype`.
 
-Contributions in the shape of coding and suggestions are welcome, but so long
-handled via personal communication.
-
-### Who do I talk to? ###
-
-* Volker Siepmann <volker.siepmann@gmail.com>
+Contributions in the shape of coding and suggestions are welcome.
+The issue tracker is open for that.

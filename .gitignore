@@ -1,6 +1,5 @@
 *.pyc
 .spyproject
-gendoc/build/
-doc/
+doc/build
 *.egg-info/
 .idea/
