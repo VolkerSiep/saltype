@@ -2,10 +2,9 @@
 """
 For a detailed documentation, see the html project documentation
 """
-import math
-from numpy import float64, seterr
+import numpy as np
 
-seterr(all="ignore")
+np.seterr(all="ignore")
 
 (ID_SRC, ID_ZERO, ID_ONE, ID_ADD, ID_SUB, ID_MUL, ID_DIV, ID_NEG,
  ID_SEL, ID_POW, ID_SIN, ID_COS, ID_TAN, ID_ASIN, ID_ACOS, ID_ATAN,
@@ -20,18 +19,18 @@ _EFUNC = [None, None, None,
           lambda c: -c[0],
           lambda c: c[1] if c[0] > 0 else 0.0,
           lambda c: c[0] ** c[1],
-          lambda c: math.sin(c[0]),
-          lambda c: math.cos(c[0]),
-          lambda c: math.tan(c[0]),
-          lambda c: math.asin(c[0]),
-          lambda c: math.acos(c[0]),
-          lambda c: math.atan(c[0]),
-          lambda c: math.sinh(c[0]),
-          lambda c: math.cosh(c[0]),
-          lambda c: math.tanh(c[0]),
-          lambda c: math.sqrt(c[0]),
-          lambda c: math.exp(c[0]),
-          lambda c: math.log(c[0]),
+          lambda c: np.sin(c[0]),
+          lambda c: np.cos(c[0]),
+          lambda c: np.tan(c[0]),
+          lambda c: np.asin(c[0]),
+          lambda c: np.acos(c[0]),
+          lambda c: np.atan(c[0]),
+          lambda c: np.sinh(c[0]),
+          lambda c: np.cosh(c[0]),
+          lambda c: np.tanh(c[0]),
+          lambda c: np.sqrt(c[0]),
+          lambda c: np.exp(c[0]),
+          lambda c: np.log(c[0]),
           lambda c: 1.0 / c[0],
           lambda c: c[0] * c[0],
           lambda c: c[0]]
@@ -628,7 +627,7 @@ class Salt(object):
         try:
             node = arg.node.dup()
         except AttributeError as exception:
-            value = float64(arg)
+            value = np.float64(arg)
             try:
                 node = Salt.__FLOAT_CACHE[value].dup()
             except KeyError:
@@ -719,7 +718,7 @@ class Leaf(Salt):
         :param value: The initial numerical value of the node
         :type value: float
         """
-        Salt.__init__(self, SymSrc(ID_SRC, float64(value)))
+        Salt.__init__(self, SymSrc(ID_SRC, np.float64(value)))
 
     @staticmethod
     def from_node(node):
@@ -729,7 +728,7 @@ class Leaf(Salt):
         return result
 
     def _set_value(self, value):
-        self.node.value = float64(value)
+        self.node.value = np.float64(value)
     value = property(Salt._get_value, _set_value)
     """Same property as defined in base class
     :py:obj:`Salt <saltype.datatype.Salt>`, but writable.

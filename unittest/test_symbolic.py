@@ -3,6 +3,7 @@
 # external modules
 from unittest import main, TestCase
 from sys import argv
+from numpy import isnan
 import math
 
 
@@ -228,6 +229,11 @@ class SymbolicTest(TestCase):
         d = 12.0 - sin(a)
         self.assertEqual(id(c.node.childs[0].tid), id(d.node.childs[0].tid))
 
+    def test_nan(self):
+        a = Leaf(-3.0)
+        b = log(a)
+        self.assertTrue(isnan(b.value))
+
     def _do_calcs(self, a, b):
         av, bv = a.value, b.value
         self.assertEqual((a * b).value, av * bv)
@@ -250,6 +256,7 @@ class SymbolicTest(TestCase):
         self.assertEqual(exp(a).value, math.exp(av))
         self.assertEqual(squ(a).value, av*av)
         self.assertEqual(inv(a).value, 1.0 / av)
+
 
 if __name__ == "__main__":
     argv.append("-v")
