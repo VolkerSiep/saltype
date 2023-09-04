@@ -7,6 +7,9 @@ found in high quantities in nature. This can be seen in parallel to *saltype*
 being developed to obtain derivatives of large scale systems, well at least a
 couple of thousand variables.
 
+For the detailed documentation, see here:
+https://saltype.readthedocs.io/en/latest/index.html
+
 ### How do I get set up? ###
 
 ``pip install saltype``
