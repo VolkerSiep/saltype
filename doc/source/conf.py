@@ -7,9 +7,9 @@
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
 project = 'Saltype'
-copyright = '2023, Volker Siepmann'
+copyright = '2024, Volker Siepmann'
 author = 'Volker Siepmann'
-release = '1.3'
+release = '1.4'
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration
