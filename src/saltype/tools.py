@@ -677,7 +677,7 @@ def dump(symbols, scope=None):
         i = h + f
         scope = {"a": a, "b": b, "c": c, "d": d, "e": e,
                  "f": f, "g": g, "h": h, "result": i}
-        print "\\n".join(dump([f,g,h,i], scope))
+        print("\\n".join(dump([f,g,h,i], scope)))
 
     will produce the following output::
 
